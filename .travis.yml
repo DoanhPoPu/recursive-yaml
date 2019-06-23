@@ -1,0 +1,26 @@
+dist: xenial
+language: python
+cache: pip
+python:
+  - '3.6'
+addons:
+  snaps:
+    - yq
+install:
+  - pip install -r requirements.txt
+  - pip install flake8 pytest pytest-cov codecov -U
+script:
+  - python -m flake8
+  - python -m pytest --cov=recursive_yaml
+  - python setup.py install
+  - recursive-yaml tests/master.yaml | yq r -
+after_success:
+  - codecov --token=92d7f2d7-bf67-4c29-9ee5-ced5f3da598a
+deploy:
+  provider: pypi
+  user: sfzhou
+  on:
+    branch: master
+  skip_existing: true
+  password:
+    secure: daGAIhEm3ngQevBNc0zf//cDbMRYbVBeagSyxoQO9/IB117gfPAMPWrPnaafo/oyAOJlp3G0g+sC4GzhWuVGT1XYvyLS4H0n9o8joEc8jm9MeZyozT+/7dQwg+xfGJTGAzsJYy3vHQPgoXAP6I0b7PyTbw5vOM+8qFR6iCDF6gIF5VKL1M2U3+Z4wcRA6Ot1tWSPWAi456c+IYxJpPGYYEsNXIR9n5ddWxJujeLQnfZDtWEpPMXIpabTi9EWOUGZ+vvu1KF7nDr02/ircuUUfd1C/oUMPBT0zQV49LLJON3xr8Z08/fLcgUVe8MjqFsCF9iK5lmxl2PnWPrkZLxGC6OA93+ZOVHoFzJncTtAYqTh7hxjNSFq32Q1Z51PAENl4JJNw47BbfvNXjIBMnJruwBrguYVsetwPhZbOLJGLIeOVpBnY2MP3HeBHe/w06qb4WNOiTQQlsueliFRBesH60dLIE4g5YOmJBNwuCf/ZfTo9YMmlEAA+SOqhU3KRO00MMZ8BxjACrv9/kGPjT4vnKuJPHUDPmuSO5AzWS+VAqaV132aCiQvo/NBTbi2xQLO5Nu7WoCYW81HGaYObsZvu+CZCFGoZcQwdgsHMqS+5pq44Z3Vid9d3bv8EcwI7ww7cxpj+Hx8PLIu6FcHAIsBOb8Hyk9jNUzA0fF01q5PmMY=

@@ -1,0 +1,4 @@
+- master:
+    $ref: ./slave.yaml
+- master2:
+    $ref: ./slave.yaml
